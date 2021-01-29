@@ -16,6 +16,10 @@
     console.warn('Ignoring Event: ' + reason);
   }
 
+  function getURL() {
+    return location.pathname === '/' ? location.href : location.origin + '/public-room';
+  }
+
   function trigger(eventName, options) {
     if (/^localhost$|^127(?:\.[0-9]+){0,2}\.[0-9]+$|^(?:0*\:)*?:?0*1$/.test(location.hostname) || location.protocol === 'file:') return warn('localhost');
     if (window.phantom || window._phantom || window.__nightmare || window.navigator.webdriver) return;
@@ -29,7 +33,7 @@
 
     var payload = {}
     payload.n = eventName
-    payload.u = location.href
+    payload.u = getURL()
     payload.d = domain
     payload.r = document.referrer || null
     payload.w = window.innerWidth
@@ -136,4 +140,4 @@
     console.error(e)
     new Image().src = plausibleHost + '/api/error?message=' +  encodeURIComponent(e.message);
   }
-})(window, '<%= base_url %>');
+})(window, 'https://plausible.io');
